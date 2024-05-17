@@ -1,0 +1,20 @@
+#clippy-container {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    width: 100px;
+    cursor: pointer;
+}
+
+#clippy {
+    width: 100%;
+    height: auto;
+}
+
+#clippy-popover {
+    position: fixed;
+    top: calc(50% + 50px);
+    left: 50px;
+    width: 100px;
+    cursor: pointer;
+}
