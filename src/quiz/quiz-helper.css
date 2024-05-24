@@ -3,12 +3,12 @@
     top: 50%;
     left: 0;
     width: 100px;
-    cursor: pointer;
 }
 
 #clippy {
     width: 100%;
     height: auto;
+    cursor: pointer;
 }
 
 #clippy-popover {
@@ -17,5 +17,25 @@
     top: calc(50% + 50px);
     left: 50px;
     width: 200px;
+    overflow: auto;
+}
+
+.question-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Make this pretty, pretty please*/
+.question-actions button {
+    background-color: #40c9ff;
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
     cursor: pointer;
+    scale: 0.8;
 }

@@ -1,3 +1,4 @@
+import html2canvas from 'html2canvas';
 import imageSource from '../content/giphy.gif';
 import './quiz-helper.css';
 
@@ -18,27 +19,78 @@ const html = `
 `;
 
 function orderQuestions(popover: HTMLDivElement) {
-    console.log('Ordering questions...');
+    console.log('Querying questions...');
+    const questionsContainers = document.querySelectorAll('.mainbox');
+    const questionsContainersArray = Array.from(questionsContainers);
 
-    const answerRows = document.querySelectorAll('.answer_row');
-    const answerRowsArray = Array.from(answerRows);
+    let content = '';
 
-    console.log(answerRowsArray);
+    const questions = [];
 
-    // answer id: .asnwer-row > .choice_input > input[name]
+    for (const questionContainer of questionsContainersArray) {
+        const questionId = questionContainer.id;
+        const questionNumber = questionId.split('_')[1] ?? 0;
 
-    const answerIds = answerRowsArray.map((answerRow) => {
-        const input = answerRow.querySelector('input');
-        if (!input) {
-            return '';
+        if (!questionNumber) {
+            continue;
         }
-        return input.id ?? input.name;
-    });
-    
-    popover.innerHTML = `<div> <h3>Answer IDs:</h3> <ul>${answerIds.map(_ => `<li>${_}</li>`).join('')}</ul>`;
 
+        questions.push(questionNumber);
+
+        console.log(`Ordering questions for question ${questionNumber}...`);
+
+        const answerRows = document.querySelectorAll('.answer_row');
+        const answerRowsArray = Array.from(answerRows);
+
+        console.log(answerRowsArray);
+
+        const answerIds = answerRowsArray.map((answerRow) => {
+            const input = answerRow.querySelector('input');
+            if (!input) {
+                return '';
+            }
+            return input.id ?? input.name;
+        });
+
+        content += `
+            <div> <h3>Question ${questionNumber}</h3> 
+            <h4> Answers </h4>
+            <ul>
+                ${answerIds.map((_) => `<li>${_}</li>`).join('')}
+            </ul>
+            <h4> Actions </h4>
+            <div class="question-actions">
+                <button id="copy-answers-${questionNumber}">Copy</button>
+            </div>
+        `;
+    }
+
+    popover.innerHTML = content;
 
     popover.showPopover();
+
+    for (const questionNumber of questions) {
+        const copyButton = document.querySelector(`#copy-answers-${questionNumber}`) as HTMLButtonElement;
+
+        copyButton.addEventListener('click', async () => {
+            console.log(`Copying answers for question ${questionNumber}...`);
+
+            //capture screenshot
+
+            const questionContainer = document.querySelector(`#question_${questionNumber}`) as HTMLDivElement;
+            questionContainer.scrollIntoView();
+
+            const screenshot = await html2canvas(questionContainer);
+
+            // download
+
+            const link = document.createElement('a');
+            link.download = `question_${questionNumber}.png`;
+            link.href = screenshot.toDataURL();
+            link.click();
+
+        });
+    }
 }
 
 export default function setupQuizHelper() {
