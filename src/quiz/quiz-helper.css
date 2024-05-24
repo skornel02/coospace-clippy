@@ -13,8 +13,9 @@
 
 #clippy-popover {
     position: fixed;
+    text-wrap: wrap;
     top: calc(50% + 50px);
     left: 50px;
-    width: 100px;
+    width: 200px;
     cursor: pointer;
 }

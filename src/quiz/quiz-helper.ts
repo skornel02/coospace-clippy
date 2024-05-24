@@ -32,10 +32,10 @@ function orderQuestions(popover: HTMLDivElement) {
         if (!input) {
             return '';
         }
-        return input.name;
+        return input.id ?? input.name;
     });
     
-    popover.innerHTML = `Answer IDs: ${answerIds.join(', ')}`;
+    popover.innerHTML = `<div> <h3>Answer IDs:</h3> <ul>${answerIds.map(_ => `<li>${_}</li>`).join('')}</ul>`;
 
 
     popover.showPopover();
