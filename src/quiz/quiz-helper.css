@@ -5,6 +5,10 @@
     width: 100px;
 }
 
+#clippy-container.hidden {
+    display: none;
+}
+
 #clippy {
     width: 100%;
     height: auto;
@@ -17,6 +21,7 @@
     top: calc(50% + 50px);
     left: 50px;
     width: 200px;
+    max-height: 250px;
     overflow: auto;
 }
 

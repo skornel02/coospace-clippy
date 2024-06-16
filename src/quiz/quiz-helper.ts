@@ -39,7 +39,7 @@ function orderQuestions(popover: HTMLDivElement) {
 
         console.log(`Ordering questions for question ${questionNumber}...`);
 
-        const answerRows = document.querySelectorAll('.answer_row');
+        const answerRows = document.querySelectorAll(`#question_${questionNumber} .answer_row`);
         const answerRowsArray = Array.from(answerRows);
 
         console.log(answerRowsArray);
@@ -88,7 +88,6 @@ function orderQuestions(popover: HTMLDivElement) {
             link.download = `question_${questionNumber}.png`;
             link.href = screenshot.toDataURL();
             link.click();
-
         });
     }
 }
@@ -100,6 +99,15 @@ export default function setupQuizHelper() {
     const popover = clippyContainer.querySelector('#clippy-popover') as HTMLDivElement;
 
     clippy.addEventListener('click', () => orderQuestions(popover));
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'h') {
+            console.log('Toggling clippy...');
+            clippyContainer.classList.toggle('hidden');
+        } else if (event.key === 'l') {
+            // console.log
+        }
+    });
 
     document.body.append(clippyContainer);
 }
