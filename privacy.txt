@@ -1,0 +1,3 @@
+This application collects no data from the user.
+
+This is a local only use extension.
