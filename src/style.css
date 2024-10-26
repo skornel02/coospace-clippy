@@ -40,6 +40,7 @@ h1 {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  min-width: 600px;
 }
 
 .logo {
@@ -93,4 +94,89 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+#question-container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 1em;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.question-filters {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 1em;
+  padding: 1em;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 1em #00000033;
+}
+
+h4.correct {
+  color: #4caf50;
+}
+
+h4.incorrect {
+  color: #f44336;
+}
+
+.coospace-question {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 1em;
+  padding: 1em;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 1em #00000033;
+}
+
+.coospace-question .answer_row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+}
+
+.coospace-question .state.on {
+  width: 16px;
+  height: 16px;
+}
+
+.coospace-question .state.n.on {
+  background-color: #f44336;
+  color: white;
+  content: 'N';
+}
+
+.coospace-question .state.y.on {
+  background-color: #4caf50;
+  color: white;
+  content: 'Y';
+}
+
+.coospace-question .state.na.on {
+  background-color: #ffeb3b;
+  color: #000;
+  content: 'N/A';
+}
+
+.coospace-question input[type='radio'] {
+  display: none;
+}
+
+.coospace-question input[type='radio'][checked] {
+  display: block;
+  background-color: #4caf50;
 }

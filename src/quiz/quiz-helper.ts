@@ -1,6 +1,9 @@
 import html2canvas from 'html2canvas';
 import imageSource from '../content/giphy.gif';
 import './quiz-helper.css';
+import { getQuestions, Question } from '../database';
+import slug from 'slug';
+import { renderQuestion } from '../question';
 
 const isChrome = navigator.userAgent.includes('Chrome');
 
@@ -18,9 +21,11 @@ const html = `
 </div>
 `;
 
+let previousQuestions: Question[] = [];
+
 function orderQuestions(popover: HTMLDivElement) {
     console.log('Querying questions...');
-    const questionsContainers = document.querySelectorAll('.mainbox');
+    const questionsContainers = document.querySelectorAll('#top-container .mainbox');
     const questionsContainersArray = Array.from(questionsContainers);
 
     let content = '';
@@ -34,6 +39,9 @@ function orderQuestions(popover: HTMLDivElement) {
         if (!questionNumber) {
             continue;
         }
+        
+        const question = questionContainer.querySelector('.userhtml')?.textContent ?? '-';
+        const question_slug = slug(question, { lower: true, replacement: '_' });
 
         questions.push(questionNumber);
 
@@ -63,6 +71,13 @@ function orderQuestions(popover: HTMLDivElement) {
                 <button id="copy-answers-${questionNumber}">Copy</button>
             </div>
         `;
+
+
+        const matchingPreviousQuestion = previousQuestions.find((_) => _.slug === question_slug);
+
+        if (matchingPreviousQuestion) {
+            content += renderQuestion(matchingPreviousQuestion);   
+        }        
     }
 
     popover.innerHTML = content;
@@ -97,6 +112,10 @@ export default function setupQuizHelper() {
     const clippyContainer = doc.body.firstElementChild!;
     const clippy = clippyContainer.querySelector('#clippy') as HTMLImageElement;
     const popover = clippyContainer.querySelector('#clippy-popover') as HTMLDivElement;
+
+    getQuestions().then((questions) => {
+        previousQuestions = questions
+    });
 
     clippy.addEventListener('click', () => orderQuestions(popover));
 

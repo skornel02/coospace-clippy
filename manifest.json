@@ -8,5 +8,6 @@
             "js": ["src/content.ts"],
             "matches": ["https://www.coosp.etr.u-szeged.hu/*"]
         }
-    ]
+    ],
+    "permissions": ["storage"]
 }

@@ -20,7 +20,7 @@
     text-wrap: wrap;
     top: calc(50% + 50px);
     left: 50px;
-    width: 200px;
+    width: 500px;
     max-height: 250px;
     overflow: auto;
 }

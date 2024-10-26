@@ -2,6 +2,7 @@ import html2canvas from 'html2canvas';
 import slug from 'slug'
 import imageSource from '../content/giphy.gif';
 import './quiz-result-helper.css';
+import { addQuestion, Question } from '../database';
 
 const isChrome = navigator.userAgent.includes('Chrome');
 
@@ -28,6 +29,9 @@ async function saveAllQuestions() {
         imgName: string;
     }[] = [];
 
+    // @ts-expect-error
+    const topic = document.getElementById('save-topic-name')?.value ?? 'unknown';
+
     while (true) {
         // second a tag
         const nextButton = document.querySelector('#page_buttons a:nth-child(2)') as HTMLAnchorElement;
@@ -35,7 +39,7 @@ async function saveAllQuestions() {
         const questionsContainers = document.querySelectorAll('.mainbox');
         const questionsContainersArray = Array.from(questionsContainers);
 
-        const questions = [];
+        let questions = [];
 
         for (const questionContainer of questionsContainersArray) {
             const questionId = questionContainer.id;
@@ -49,7 +53,13 @@ async function saveAllQuestions() {
         }
 
         for (const questionNumber of questions) {
-            const questionContainer = document.querySelector(`#question_${questionNumber}`) as HTMLDivElement;
+            const questionContainer = document.querySelector(`#question_${questionNumber}`) as HTMLDivElement | null;
+
+            if (!questionContainer) {
+                questions = questions.filter((_) => _ !== questionNumber);
+                continue;
+            }
+
             questionContainer.scrollIntoView();
 
             const good = questionContainer.classList.contains('question_good');
@@ -76,10 +86,22 @@ async function saveAllQuestions() {
             link.href = screenshot.toDataURL();
             link.click();
 
-            answerList.push({ question, answers, imgName: fileName });
+            const questionEntiy: Question = {
+                slug: question_slug,
+                topic,
+                correct: good,
+                question,
+                answers,
+                imgName: fileName,
+                html: questionContainer.outerHTML,
+            }
+
+            await addQuestion(questionEntiy);
+
+            answerList.push(questionEntiy);
         }
 
-        if (nextButton.classList.contains('linkbutton24_disabled')) {
+        if (questions.length > 0 && nextButton.classList.contains('linkbutton24_disabled')) {
             break;
         } else {
             nextButton.click();
@@ -95,10 +117,14 @@ async function saveAllQuestions() {
 }
 
 function orderQuestions(popover: HTMLDivElement) {
-
+    // save to a topic name
     let content = `<div> <h3>Save all answers</h3> 
             <h4> Actions </h4>
             <div class="question-actions">
+                <div>
+                    <label for="save-topic-name">Topic name</label>
+                    <input type="text" id="save-topic-name" placeholder="Topic name">
+                </div>
                 <button id="copy-answers">Save</button>
             </div>
             </div>`;
