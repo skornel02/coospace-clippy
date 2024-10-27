@@ -79,7 +79,7 @@ async function saveAllQuestions() {
 
             // download
 
-            const fileName = `question_${question_slug}_${good ? 'good' : 'bad'}.png`;
+            const fileName = `question_${question_slug.split("_").slice(0, 15).join("_")}_${good ? 'good' : 'bad'}.png`;
 
             const link = document.createElement('a');
             link.download = fileName;
