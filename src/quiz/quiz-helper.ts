@@ -123,10 +123,20 @@ export default function setupQuizHelper() {
         if (event.key === 'h') {
             console.log('Toggling clippy...');
             clippyContainer.classList.toggle('hidden');
+
+            const hidden = clippyContainer.classList.contains('hidden');
+
+            chrome.storage.local.set({ hidden });
         } else if (event.key === 'l') {
             // console.log
         }
     });
+
+    chrome.storage.local.get('hidden', (result) => {
+        if (result.hidden) {
+            clippyContainer.classList.add('hidden');
+        }
+    });    
 
     document.body.append(clippyContainer);
 }
