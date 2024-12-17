@@ -1,7 +1,12 @@
 {
     "manifest_version": 3,
     "name": "Coospace Clippy",
-    "version": "1.0.2",
+    "version": "1.0.4",
+    "icons": {
+        "48": "assets/android-icon-48x48.png",
+        "144": "assets/android-icon-144x144.png",
+        "192": "assets/android-icon-192x192.png"
+    },
     "action": { "default_popup": "index.html" },
     "content_scripts": [
         {

@@ -31,6 +31,8 @@ async function saveAllQuestions() {
 
     // @ts-expect-error
     const topic = document.getElementById('save-topic-name')?.value ?? 'unknown';
+    
+    const now = new Date().toISOString();
 
     while (true) {
         // second a tag
@@ -52,6 +54,7 @@ async function saveAllQuestions() {
             questions.push(questionNumber);
         }
 
+
         for (const questionNumber of questions) {
             const questionContainer = document.querySelector(`#question_${questionNumber}`) as HTMLDivElement | null;
 
@@ -62,6 +65,7 @@ async function saveAllQuestions() {
 
             questionContainer.scrollIntoView();
 
+
             const good = questionContainer.classList.contains('question_good');
             const question = questionContainer.querySelector('.userhtml')?.textContent ?? '-';
             const answersDivs = questionContainer.querySelectorAll('.valids');
@@ -71,15 +75,17 @@ async function saveAllQuestions() {
 
             const question_slug = slug(question, { lower: true, replacement: '_' });
 
-            if (deduplication.includes(question_slug)) {
+            if (deduplication.includes(questionNumber)) {
                 continue;
             } else {
-                deduplication.push(question_slug);
+                deduplication.push(questionNumber);
             }
 
             // download
 
-            const fileName = `question_${question_slug.split("_").slice(0, 15).join("_")}_${good ? 'good' : 'bad'}.png`;
+            const fileName = `question_${questionNumber}_${good ? 'good' : 'bad'}_${now}.png`;
+
+            console.log('Downloading', fileName);
 
             const link = document.createElement('a');
             link.download = fileName;
@@ -111,7 +117,7 @@ async function saveAllQuestions() {
     const json = JSON.stringify(answerList, null, 2);
 
     const link = document.createElement('a');
-    link.download = `answers.json`;
+    link.download = `answers-${now}.json`;
     link.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(json);
     link.click();
 }
