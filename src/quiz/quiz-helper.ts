@@ -5,7 +5,6 @@ import slug from 'slug';
 import { renderQuestion } from '../question';
 import {
     displayAnswerIdsInForm,
-    getAnswerIdsFromAnswerRows,
     getElementsFromQuestionContainer,
     getQuestionContainers,
     inlineIdsEnabled,
