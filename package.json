@@ -17,6 +17,7 @@
         "@types/chrome": "^0.0.268",
         "@types/slug": "^5.0.9",
         "html2canvas": "^1.4.1",
+        "jszip": "^3.10.1",
         "slug": "^10.0.0"
     }
 }
